@@ -10,7 +10,7 @@
 		max-width: 1000px;
 		background-color: white;
 		padding: 2em;
-		margin: 0 auto;
+		margin: 2.5em auto;
 		box-sizing: border-box;
 	}
 </style>

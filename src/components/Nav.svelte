@@ -4,6 +4,30 @@
 
 	let src = '/images/Hamburger_icon.png' ;
 	let showMenu = false;
+	const names =
+			{ "mp": "Morning Prayer"
+			, "midday": "Midday Prayer"
+			, "ep": "Evening Prayer"
+			, "compline": "Compline"
+			, "family": "Family Prayers"
+			, "/": "Calendar"
+			, "pastoral": "Pastoral"
+			, "vigil": "Vigal"
+			, "canticles": "Canticles"
+			, "op": "Occasional Prayers"
+			, "pl": "Prayer List"
+			, "about": "About"
+			, "blog": "Blog"
+			, "db": "Load Database"
+			};
+
+	function currentPage(p) {
+		return names[p] ? names[p] : "Calendar"
+	}
+
+	function leftRight(n) {
+		return ((n % 2) === 0) ? "options left" : "options right"
+	}
 </script> 
 
 <style>
@@ -68,7 +92,7 @@
 		font-size: 134%;
 		text-align: right;
 		margin-left: 1em;
-		margin-top: 0.5em;
+		margin-top: 0;
 	}
 	div.options {
 		position: fixed;
@@ -91,6 +115,14 @@
 		float: right;
 		margin-right: 0.5em;
 	}
+	p.page {
+		position: absolute;
+		width:	90%;
+		text-align: center;
+		padding: 0;
+		margin: 0;
+		top: 2em;
+	}
 </style>
 
 <nav>
@@ -100,128 +132,22 @@
 		</li>
 		<li class='bcp topLine'>Book of Common Prayer 2019</li>
 	</ul>
+	<p class='page'>{currentPage(segment)}</p>
 </nav>
 {#if showMenu}
 	<div class='options' transition:slide>
 		<ul>
-			<!-- note to the programmer: BE SURE to alternate left and right
-				or you will get weird columns!
-			-->
-			<li class="options left">
-				<a 	aria-current='{segment === "mp" ? "page" : undefined}'
-					on:click={ e => showMenu = false} 
-					href="mp"
-				>
-					Morning Prayer
-				</a>
-			</li>
-			<li class="options right">
-				<a 	aria-current='{segment === "midday" ? "page" : undefined}' 
-					on:click={ e => showMenu = false} 
-					href="midday"
-				>
-					Midday Prayer
-				</a>
-			</li>
-			<li class="options left">
-				<a 	aria-current='{segment === "ep" ? "page" : undefined}' 
-					on:click={ e => showMenu = false} 
-					href="ep"
-				>
-					Evening Prayer
-				</a>
-			</li>
-			<li class="options right">
-				<a 	aria-current='{segment === "compline" ? "page" : undefined}' 
-					on:click={ e => showMenu = false} 
-					href="compline"
-				>
-					Compline
-				</a>
-			</li>
-			<li class="options left">
-				<a 	aria-current='{segment === "family" ? "page" : undefined}' 
-					on:click={ e => showMenu = false} 
-					href="family"
-				>
-					Family Prayers
-				</a>
-			</li>
-			<li class="options right">
-				<a 	aria-current='{segment === "" ? "page" : undefined}' 
-					on:click={ e => showMenu = false} 
-					href="/"
-				>
-					Calendar
-				</a>
-			</li>
-			<li class="options left">
-				<a 	aria-current='{segment === "pastoral" ? "page" : undefined}' 
-					on:click={ e => showMenu = false} 
-					href="pastoral"
-				>
-					Pastoral
-				</a>
-			</li>
-			<li class="options right">
-				<a 	aria-current='{segment === "vigil" ? "page" : undefined}' 
-					on:click={ e => showMenu = false} 
-					href="vigil"
-				>
-					Vigil
-				</a>
-			</li>
-			<li class="options left">
-				<a 	aria-current='{segment === "canticles" ? "page" : undefined}' 
-					on:click={ e => showMenu = false} 
-					href="canticles"
-				>
-					Canticles
-				</a>
-			</li>
-            <li class="options right">
-            	<a 	aria-current='{segment === "op" ? "page" : undefined}' 
-            		on:click={ e => showMenu = false} 
-            		href="op"
-            	>
-            		Occasional Prayers
-            	</a>
-            </li>
-			<li class="options left">
-				<a 	aria-current='{segment === "pl" ? "page" : undefined}' 
-					on:click={ e => showMenu = false} 
-					href="pl"
-				>
-					Prayer List
-				</a>
-			</li>
+			{#each Object.keys(names) as key, i}
 
-			<li class="options right">
-				<a 	aria-current='{segment === "about" ? "page" : undefined}' 
-					on:click={ e => showMenu = false} 
-					href="about"
-				>
-					About
+				<li class='{leftRight(i)}' >
+					<a aria-current='{segment === key ? "page" : undefined}'
+					   on:click={e => showMenu = false}
+					   href={key}
+					>
+					{names[key]}
 				</a>
-			</li>
-			<li class="options left">
-				<a 	aria-current='{segment === "blog" ? "page" : undefined}' 
-					on:click={ e => showMenu = false} 
-					href="blog"
-				>
-					Blog
-				</a>
-			</li>
-			<li class="options right">
-				<a 	aria-current='{segment === "db" ? "page" : undefined}' 
-					on:click={ e => showMenu = false} 
-					href="db"
-				>
-					Load Database
-				</a>
-			</li>
-
-
+				</li>
+			{/each}
 		</ul>
 	</div>
 {/if}
