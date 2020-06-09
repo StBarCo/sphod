@@ -1,15 +1,23 @@
 <!-- OccasionPrayers -->
 <script>
+	import {createEventDispatcher} from 'svelte';
 	import { occasionalPrayersDB } from '../components/occasionalPrayersDB.js';
 	import { titleCase } from 'title-case';
 
 	let showCategory = [];
 	let showPrayer = [];
+	let dispatch = createEventDispatcher();
+
+	function handleShowPrayer(p, i) {
+		showPrayer[i] = !showPrayer[i];
+		dispatch('opClick',p);
+	}
 </script>
 
 <style>
 	ul {
 		list-style: none;
+		z-index: 99;
 	}
 	p { 
 		margin: 0; 
@@ -25,12 +33,12 @@
 
 <ul>
 	{#each $occasionalPrayersDB.categories as cat, i}
-		<li on:click={ () => showCategory[i] = !showCategory[i]} >{cat}</li>
+		<li on:click|stopPropagation={ () => showCategory[i] = !showCategory[i]} >{cat}</li>
 		{#if showCategory[i]}
 		<ul>
 			{#each $occasionalPrayersDB.rows as row, j}
 				{#if row.category === cat}
-					<li on:click={ () => showPrayer[j] = !showPrayer[j] } >
+					<li on:click|stopPropagation={ () => handleShowPrayer(row, j) } >
 						<p class='title'>
 							{titleCase(row.title)} ({row.source})
 						</p>

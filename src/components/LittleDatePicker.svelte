@@ -3,12 +3,16 @@
 	import {createEventDispatcher, onMount} from 'svelte';
   import {titleCase} from 'title-case';
   import {scriptureDB} from './scriptureDB.js';
+  import getDayOfYear from 'date-fns/getDayOfYear';
+  import getDaysInMonth from 'date-fns/getDaysInMonth';
+  import endOfMonth from 'date-fns/endOfMonth';
+  import addDays from 'date-fns/addDays';
+
 
   scriptureDB.init()
 
-	export var headers = [];
-	export let days = [];
-	export let items = [];
+	let headers = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+	let days = initMonth();
 	
 	let dispatch = createEventDispatcher();
 
@@ -19,6 +23,28 @@
     return dn;
   }
 
+  function initMonth() {
+    let days = [];
+    let now = new Date();
+
+    // let monthAbbrev = monthNames[month].slice(0,3);
+    // let nextMonthAbbrev = monthNames[(month+1)%12].slice(0,3);
+    //  find the last Monday of the previous month
+    var firstOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
+    var firstDay = firstOfMonth.getDay();
+    //console.log('fd='+firstDay+' '+dayNames[firstDay]);
+    var firstCalendarDay = addDays(firstOfMonth, -firstDay)
+    var daysInThisMonth = getDaysInMonth(now);
+    var calendarDays = daysInThisMonth + firstDay + (6 - endOfMonth(now).getDay())
+    // var daysInLastMonth = new Date(year, month, 0).getDate();
+    // var prevMonth = month==0 ? 11 : month-1;
+    for (let i = 0; i < calendarDays; i++) {
+      let d = addDays(firstCalendarDay, i);
+      days.push( d );
+    }
+    return days;
+
+}
 	
 </script>
 
@@ -27,19 +53,17 @@
   display: grid;
   width: 100%;
   grid-template-columns: repeat(7, minmax(5%, 14%));
-  grid-template-rows: 50px;
-  grid-auto-rows: 120px;
+  grid-template-rows: 25px;
+  grid-auto-rows: 25px;
   overflow: auto;
 }
-.litDay {
-  font-variant: small-caps;
-  color: darkblue;
-}
 .day {
-  border-bottom: 1px solid rgba(166, 168, 179, 0.12);
-  border-right: 1px solid rgba(166, 168, 179, 0.12);
-  text-align: right;
-  padding: 5px;
+  border: 1px solid blue;
+  border-radius: 25px;
+  text-align: center;
+  vertical-align: middle;
+  width: 25px;
+  padding: 0px;
   letter-spacing: 1px;
   font-size: 14px;
   box-sizing: border-box;
@@ -47,18 +71,13 @@
   position: relative;
   z-index: 1;
 }
-@media (max-width: 800px)
-     { 
-      .day { 
-        font-size: 12px;
-      }
-}
 
 .day:nth-of-type(7n + 7) {
   border-right: 1;
 }
 .day:nth-of-type(n + 1):nth-of-type(-n + 7) {
   grid-row: 1;
+  margin-bottom: 1em;
 }
 .day:nth-of-type(n + 8):nth-of-type(-n + 14) {
   grid-row: 2;
@@ -104,6 +123,7 @@
   border-bottom: 1px solid rgba(166, 168, 179, 0.12);
   line-height: 50px;
   font-weight: 500;
+  margin-bottom: 1em;
 }
 .day-disabled {
   color: rgba(152, 160, 166, 0.5);
@@ -112,36 +132,19 @@
   cursor: not-allowed;
 }
 .season {}
-@media (max-width: 400px) {
-  .season {
-    display: none;
-  }
-  .day {
-    text-align: center;
-    border: 1px solid black;
-    border-radius: 25px;
-    margin: 5px;
-    text-align: center;
-  }
-  .calendar {
-      grid-auto-rows: 40px;
-  }
-}
-
 
 
 </style>
 
+<p>little date picker here</p>
 <div class="calendar">
   {#each headers as header}
-  <span class="day-name" on:click={()=>dispatch('headerClick',header)}>{header}</span>
+    <span class="day-name" on:click={()=>dispatch('headerClick',header)}>{header}</span>
   {/each}
 
-  {#each days as ld}
-    <span class='day' on:click={ () => dispatch('dayClick', ld)}> 
-      { ld.dom }
-      <br>
-      <span class='season'>{ dayName(ld) } </span>
+  {#each days as d}
+    <span class='day' on:click={ () => dispatch('dayClick', d)}> 
+      { d.getDate() }
     </span>
   {/each}
 

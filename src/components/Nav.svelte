@@ -8,6 +8,11 @@
 
 <style>
 	nav {
+		position: fixed;
+		top: 0px;
+		width: 100%;
+		z-index: 9999;
+		background-color: lavender;
 		border-bottom: 1px solid rgba(255,62,0,0.1);
 		font-weight: 300;
 		padding: 0 1em;
@@ -66,7 +71,7 @@
 		margin-top: 0.5em;
 	}
 	div.options {
-		position: absolute;
+		position: fixed;
 		left: 0px;
 		z-index: 9999;
 		top: 4em;
@@ -205,6 +210,14 @@
 					href="blog"
 				>
 					Blog
+				</a>
+			</li>
+			<li class="options right">
+				<a 	aria-current='{segment === "db" ? "page" : undefined}' 
+					on:click={ e => showMenu = false} 
+					href="db"
+				>
+					Load Database
 				</a>
 			</li>
 

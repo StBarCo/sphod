@@ -126,7 +126,7 @@
   cursor: not-allowed;
 }
 .season {}
-@media (max-width: 450px) {
+@media (max-width: 600px) {
   .season {
     display: none;
   }

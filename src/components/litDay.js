@@ -270,7 +270,7 @@ function getSeason(ld) {
         case inRange( ld.doy, pentecostDOY(ld), pentecostDOY(ld) + 6) : 
             return initSeason("pentecost", 1, getColors(ld), ld.litYear );
         case inRange( ld.doy, trinityDOY(ld), trinityDOY(ld) + 6) : 
-            return initSeason("trinity", 0, getColors(ld), ld.litYear );
+            return initSeason("trinity", 1, getColors(ld), ld.litYear );
         default: 
             return initSeason("proper", calculateProper(ld), getColors(ld), ld.litYear );
     }
