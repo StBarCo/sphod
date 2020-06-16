@@ -12,9 +12,8 @@ function createPrayerListDB() {
     return {
         subscribe
     ,   init: () => {
-            db.allDocs({ include_docs: true })
+            db.allDocs({ include_docs: true, descending: true })
             .then( resp => {
-                console.log("PRAYER LIST RESP: ", resp)
                 update ( p => {return p = resp});
             })
             .catch( err => {
@@ -23,9 +22,18 @@ function createPrayerListDB() {
         }
     ,   add: (prayerObj) => {
             console.log("SAVE THIS: ", prayerObj )
-            db.put(prayerObj, (err, result) => {
+            db.put(prayerObj, {include_docs: true}, (err, result) => {
                 if (!err) {
-                    console.log("SUCCESS!: ", result)
+                    db.get(result.id)
+                    .then( resp => {
+                        // conform newRow to existing rows
+                        let newRow = {id: result.id, key: result.id, doc: prayerObj};
+                        update( p => {
+                            p.rows.unshift(newRow); // unshift add element to beginning of the array
+                            p.total_rows += 1;
+                            return p;
+                        })
+                    })
                 }
                 else {
                     console.log("FAILURE: ", err, result)
@@ -45,8 +53,11 @@ function createPrayerListDB() {
     ,   remove: (prayerObj) => {
             db.remove(prayerObj)
             .then( resp => {
-                console.log("REMOVE: ", resp)
-                update( p => { return p.rows.filter( r => r.id != prayerObj.id )} );
+                update( p => { 
+                    p.rows = p.rows.filter( r => r.id != prayerObj._id );
+                    p.total_rows -= 1;
+                    return p;
+                })
             })
             .catch( err => {
                 console.log("FAILED TO REMOVE ", prayerObj, " Err: ", err)
