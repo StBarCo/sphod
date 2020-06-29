@@ -23,12 +23,14 @@
     import MiddayScripture from '../components/MiddayScripture.svelte';
     import LordHaveMercy from '../components/LordHaveMercy.svelte';
     import LordsPrayer from '../components/LordsPrayer.svelte';
+    import PrayerList from '../components/PrayerList.svelte';
     import Amen from '../components/Amen.svelte';
     // import {Button} from 'smelte';
 
     let service = "mp"
     litDay.init(service);
     let additionalDirections = false;
+    let showPrayerList = false;
 
 
 </script>
@@ -94,6 +96,9 @@
 <CollectForMission />
 
 <Rubric text={"The Officiant may invite the People to offer intercessions and thanksgivings. A hymn or anthem may be sung."} />
+<button on:click={ () => showPrayerList = !showPrayerList} >Prayer List</button>
+{#if showPrayerList} <PrayerList /> {/if}
+
 <Rubric text={"Before the close of the Office one or both of the following prayers may be used."} />
 
 <GeneralThanksgiving />
