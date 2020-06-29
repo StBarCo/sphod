@@ -3,8 +3,10 @@
 	export let prayerObj = initPrayerObj();
 	import OccasionalPrayers from './OccasionalPrayers.svelte';
 	import { prayerListDB } from '../components/prayer-list-db.js';
+	import { titleCase } from 'title-case';
 	import {createEventDispatcher} from 'svelte';
 	import rfdc from 'rfdc';
+	import isEqual from 'lodash/isEqual';
 	const clone = rfdc();
 
 	let isNew = ((prayerObj.for.length + prayerObj.why.length) === 0);
@@ -12,6 +14,7 @@
 	let dispatch = createEventDispatcher();
 	let tPrayer = clone(prayerObj);
 	let addOP = false;
+	let changeOP = false;
 
 	function initPrayerObj() {
 		return { _id: new Date().toISOString()
@@ -32,35 +35,41 @@
 		}
 	}
 
-	function handleOPClick() {
-		console.log('do something smart')
+	function handleOPClick(e) {
+		console.log('OP CLICK', e)
+		tPrayer.op = e.detail;
+		addOP = false;
 	}
 
-	function handleSaveOP() {
-		console.log("SAVE OP")
-		prayerListDB.add(tPrayer);
-		tPrayer = initPrayerObj();
-		addPrayer = false;
-	}
 
 	function handleResetOP() {
 		tPrayer = initPrayerObj();
+		addOP = true;
 	}
 
 	function handleSaveClick(e) {
-		console.log("HANDLE SAVE CLICK", prayerObj === tPrayer)
-		prayerObj = tPrayer;
-		// saving prayer goes here!!!
-		dispatch('closeEditPrayer', e);
+		if ( !isEqual(prayerObj, tPrayer) ) {
+			prayerObj = tPrayer;
+			isNew ? prayerListDB.add(prayerObj) : prayerListDB.update(prayerObj);
+			isNew = false;
+		}
+		dispatch('doneEditPrayer', prayerObj);
 	}
 
 	function handleResetClick() {
-		console.log("RESET", tPrayer, prayerObj)
 		tPrayer = prayerObj;
+		document.getElementById('prayerRequest').value = "";
 	}
 
 	function thisTextarea() {
-		return tPrayer.why.length > 0 ? tPrayer.for + '/n' + tPrayer.why : tPrayer.for;
+		return tPrayer.why.length > 0 ? tPrayer.for + '\r\n' + tPrayer.why : tPrayer.for;
+	}
+
+	function handleChangeOP() {
+		changeOP = !changeOP;
+	}
+	function toggleText(toggle, whenTrue, whenFalse) {
+		return toggle ? whenTrue : whenFalse;
 	}
 </script>
 
@@ -68,6 +77,7 @@
 	p {
 		margin: 0;
 		padding: 0;
+		width: 98%;
 	}
 	div {
 		position: absolute;
@@ -76,6 +86,7 @@
 		border: 1px solid blue;
 		border-radius: 5px;
 		padding: 5px;
+		z-index: 9;
 	}
 	input {
 		width: 95%;
@@ -95,17 +106,22 @@
 		margin-bottom: 1em;
 	}
 
-	button.green {
+	button {
 		width: 45%;
-		background-color: green;
-		color: beige;
 		border-radius: 1em;
 	}
+
+	button.green {
+		background-color: green;
+		color: beige;
+	}
 	button.red {
-		width: 45%;
 		background-color: red;
 		color: beige ;
-		border-radius: 1em;
+	}
+	button.blue {
+		background-color: lightblue;
+		width: 33%;
 	}
 </style>
 
@@ -114,30 +130,35 @@
 		<button class='green' on:click={ e => handleSaveClick(e) } >All Done</button>
 		<button class='red' on:click={ () => handleResetClick() } >Reset</button>
 	</p>
-	{#if isNew}
-		<textarea 	placeholder="who or what to praying for and for what reason?" 
+		<textarea 	id='prayerRequest'
+					placeholder="who or what to praying for and for what reason?" 
 					on:input={ (e) => changingText(e) }
 					value={thisTextarea()}
 		/>
-	{:else}
-		<p>Pray for</p>
-		<input value={tPrayer.for} />
-		<p>Prayer Request</p>
-		<textarea value={tPrayer.why} ></textarea>
-		<br>
+
+	{#if tPrayer.for.length > 0}
+		<p>For: {tPrayer.for}</p>
+	{/if}
+	{#if tPrayer.why.length > 0}
+		<p>Why: {tPrayer.why}</p>
 	{/if}
 
 	{#if tPrayer.op}
-		<ul>
-		<li>Occasional Prayer</li>
-		<li>{tPrayer.op.title}</li>
-		<li>{tPrayer.op.category} from {tPrayer.op.from}</li>
-		<li>{tPrayer.op.prayer}</li>
-		<li>
-			<button on:click={ () => handleSaveOP() } >Save</button>
-			<button on:click={ () => handleResetOP() } >Reset</button>
-		</li>
-		</ul>
+		<p>Occasional Prayer</p>
+		<p>{ titleCase(tPrayer.op.title)}
+			<button class='blue' on:click={ () => handleChangeOP() } >
+				{ toggleText(changeOP, "All Done", "Change") }
+			</button>
+		{#if changeOP}
+			<OccasionalPrayers on:opClick={ e => handleOPClick(e) }/>
+
+		{:else}
+			<p>{tPrayer.op.category} from {tPrayer.op.source}</p>
+			<p>{titleCase(tPrayer.op.title)}</p>
+			<p>{tPrayer.op.prayer}</p>
+		{/if}
+		</p>
+-->
 	{:else}
 		<button on:click={ () => addOP = !addOP} >Add Occasional Prayer</button>
 		{#if addOP }

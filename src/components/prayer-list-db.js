@@ -41,13 +41,9 @@ function createPrayerListDB() {
             })// do something smart
     }
     ,   update: (prayerObj) => {
-            db.put(prayerObj);
-            update( p => {
-                p.rows.forEach( r => {
-                    if ( r.id === prayerObj.id) { r = prayerObj; }
-                    return r;
-                })
-                return p;
+            db.put(prayerObj)
+            .catch( err => {
+                console.log("Failed to update Prayer List: ", err)
             })
     }
     ,   remove: (prayerObj) => {
@@ -71,8 +67,6 @@ function createPrayerListDB() {
 function initPrayerList() {
     return {total_rows: 0, offset: 0, rows: []};
 }
-
-// FYI SUN:0, M:1, TU:2, WE:3, TH:4, FR:5, SAT:6
 
 export const prayerListDB = createPrayerListDB();
 // export const lectionaryDB = createDailyLectionaryDB();

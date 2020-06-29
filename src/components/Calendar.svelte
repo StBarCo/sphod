@@ -4,7 +4,7 @@
 	{/each}
 
   {#each days as ld}
-    <span class='day' on:click={ () => dispatch('dayClick', ld)}> 
+    <span class='{dayClass(ld)}' on:click={ () => dispatch('dayClick', ld)}> 
       { ld.dom }
       <br>
       <span class='season'>{ dayName(ld) } </span>
@@ -33,10 +33,40 @@
     return dn;
   }
 
+  function dayClass(ld) {
+    console.log("DAY CLASS: ", ld.colors[0])
+    return "day " + ld.colors[0];
+  }
+
 	
 </script>
 
 <style>
+.white, .gold {
+  background: linear-gradient( 9deg, silver, white);
+  color: darkblue;
+}
+.green {
+  background: linear-gradient( 9deg, rgba(23, 102, 10, 0.8), rgba(226, 255, 221, 0.8));
+  color: indigo;
+}
+.red {
+  background: linear-gradient( 9deg, pink, red);
+  color: beige;
+}
+.violet {
+  background: linear-gradient( 9deg, rgba(60, 1, 99, 0.8), rgba(241, 229, 249, 0.8));
+  color: whitesmoke;
+}
+.blue {
+  background: linear-gradient( 9deg, rgba(0, 5, 99, 0.8), rgba(220, 230, 239, 0.8));
+  color: whitesmoke;
+}
+.rose {
+  background: linear-gradient( 9deg, rgba(188, 9, 103, 0.8), rgba(239, 220, 230, 0.8));
+  color: darkgrey;
+}
+
 .calendar {
   display: grid;
   width: 100%;
@@ -57,7 +87,6 @@
   letter-spacing: 1px;
   font-size: 14px;
   box-sizing: border-box;
-  color: #98a0a6;
   position: relative;
   z-index: 1;
 }

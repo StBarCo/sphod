@@ -5,7 +5,6 @@
     import { collectDB } from './collectDB.js';
     // import { Button } from 'smelte';
     import { titleCase } from 'title-case';
-    console.log("COLLECTDB: ", $collectDB)
     collectDB.get(ofType);
 
     // if day is tues and of type is peace - don't show

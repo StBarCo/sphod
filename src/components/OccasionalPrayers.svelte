@@ -12,6 +12,10 @@
 		showPrayer[i] = !showPrayer[i];
 		dispatch('opClick',p);
 	}
+
+	function handleSelectNone() {
+		dispatch('opClick', undefined)
+	}
 </script>
 
 <style>
@@ -32,6 +36,7 @@
 </style>
 
 <ul>
+	<li on:click={ () => handleSelectNone()} >- none -</li>
 	{#each $occasionalPrayersDB.categories as cat, i}
 		<li on:click|stopPropagation={ () => showCategory[i] = !showCategory[i]} >{cat}</li>
 		{#if showCategory[i]}

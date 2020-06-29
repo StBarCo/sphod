@@ -26,17 +26,19 @@ function createLessonDB() {
             var lessonKey = service ? service + lesson : ld.service + lesson;
             lectionaryRemote.get(ld.mpep)
             .then( resp => { 
+                var queryKeys = resp[lessonKey].map( k => {return k.read})
                 var allPromises = [];
-                resp[lessonKey].map( k => {return k.read;})
-                .forEach( (q, i) => {
+                //resp[lessonKey].map( k => {return k.read;})
+                queryKeys.forEach( (q, i) => {
                     allPromises.push( axios.get('https://api.esv.org/v3/passage/html?q=' + q + ";include-audio-link=false"))
                 })
+                console.log("QUERY KEYS:", queryKeys)
                 Promise.all(allPromises)
                 .then( resps =>{
-                    var x = resps
-                        .map( resp => { return resp.data.passages})
+                    let tmp = resps
+                        .map( (resp, i) => { return {text: resp.data.passages, query: queryKeys[i]}})
                     update( l => {
-                        l[lesson] = x;
+                        l[lesson] = tmp;
                         return l;
                         });
                 })

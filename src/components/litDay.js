@@ -46,8 +46,14 @@ function createLitDay() {
     return {
         subscribe
     ,   init: (service) => {
-            var ld = innerInit(new Date);
-            return set( Object.assign(ld, getSeason(ld), {service: service} ) )
+            let ld = innerInit(new Date);
+            return set( 
+                Object.assign(
+                    ld, 
+                    getSeason(ld),
+                    {service: service} 
+                ) 
+            )
         }
     ,   getByDate: (d, service = undefined) => {
             var ld = innerInit(d);
@@ -202,8 +208,7 @@ end
 
 }
 
-function getColors(ld) {
-    var season = ld.season
+function getColors(season, ld) {
     var basicColors = {
           advent: ["purple"]
         , christmas: ["white", "gold"]
@@ -254,25 +259,25 @@ function getSeason(ld) {
     var d = undefined;
     switch(true) {
         case inRange( ld.doy, ld.advent1, dayBefore(christmasDOY)) : 
-            return initSeason("advent", daysToWeeks(ld.doy - ld.advent1), getColors(ld), ld.litYear );
+            return initSeason("advent", daysToWeeks(ld.doy - ld.advent1), getColors("advent", ld), ld.litYear );
         case inRange( ld.doy, christmasDOY, dayBefore(epiphanyDOY)) : 
-            return initSeason("christmas", daysToWeeks(ld, christmasDOY), getColors(ld), ld.litYear );
+            return initSeason("christmas", daysToWeeks(ld, christmasDOY), getColors("vhristmas", ld), ld.litYear );
         case inRange( ld.doy, epiphanyDOY, dayBefore(ashWednesdayDOY(ld))) : 
-            return initSeason("epiphany", daysToWeeks(ld, epiphanyDOY), getColors(ld), ld.litYear );
+            return initSeason("epiphany", daysToWeeks(ld, epiphanyDOY), getColors("epiphany", ld), ld.litYear );
         case inRange( ld.doy, d = ashWednesdayDOY(ld), dayBefore(palmSundayDOY(ld))) : 
-            return initSeason("lent", daysToWeeks(ld, d), getColors(ld), ld.litYear );
+            return initSeason("lent", daysToWeeks(ld, d), getColors("lent", ld), ld.litYear );
         case inRange( ld.doy, d = palmSundayDOY(ld), dayBefore(ld.easter)) : 
-            return initSeason("holyWeek", (ld.doy - d), getColor(ld), ld.litYear );
+            return initSeason("holyWeek", (ld.doy - d), getColors("holyWeek", ld), ld.litYear );
         case inRange( ld.doy, ascensionDOY(ld), ascensionDOY(ld) + 2) :
-            return initSeason("ascension", 0, getColors(ld), ld.litYear );
+            return initSeason("ascension", 0, getColors("ascension", ld), ld.litYear );
         case inRange( ld.doy, ld.easter, dayBefore(pentecostDOY(ld))) : 
-            return initSeason("easter", daysToWeeks(ld.doy - ld.easter), getColors(ld), ld.litYear );
+            return initSeason("easter", daysToWeeks(ld.doy - ld.easter), getColors("easter", ld), ld.litYear );
         case inRange( ld.doy, pentecostDOY(ld), pentecostDOY(ld) + 6) : 
-            return initSeason("pentecost", 1, getColors(ld), ld.litYear );
+            return initSeason("pentecost", 1, getColors("pentecost", ld), ld.litYear );
         case inRange( ld.doy, trinityDOY(ld), trinityDOY(ld) + 6) : 
-            return initSeason("trinity", 1, getColors(ld), ld.litYear );
+            return initSeason("trinity", 1, getColors("trinity", ld), ld.litYear );
         default: 
-            return initSeason("proper", calculateProper(ld), getColors(ld), ld.litYear );
+            return initSeason("proper", calculateProper(ld), getColors("proper", ld), ld.litYear );
     }
 }
 

@@ -4,6 +4,7 @@
     import Versical from './Versical.svelte';
     import Line from './Line.svelte';
     import Antiphon from './Antiphon.svelte';
+    import PlayAudio from './PlayAudio.svelte';
     import { litDay } from './litDay.js';
     import { canticleDB } from './canticleDB.js'
     
@@ -46,13 +47,16 @@
 <Rubric text={"Then follows the Venite. Alternatively, the Jubilate may be used. One of these antiphons, or one from the seasonal antiphons provided at the end of the Office (pages 29-30), may be sung or said before and after the Invitatory Psalm."} />
 <Antiphon />
 
+{#if $canticleDB.named._id.length > 0}
 <div>
 	<h3>{$canticleDB.named.name} {$canticleDB.named.title}</h3>
 	<Rubric text={$canticleDB.named.notes} />
+    <PlayAudio src={$canticleDB.named._id} />
 	{#each $canticleDB.named.text as l }
 			<Line indent={l.indent} text={l.text} />
 	{/each}
 </div>
+{/if}
 
 <Antiphon />
 

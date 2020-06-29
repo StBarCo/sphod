@@ -36,7 +36,7 @@ function createPsDB() {
                 resp.forEach( (r, i) =>{
                     var [p, f, t] = assignedPsalms[i];
                     t = isNaN(t) ? 999 : t;
-                    var obj = {name: r.name, title: r.title, vss: []}
+                    var obj = {_id: r._id, name: r.name, title: r.title, vss: []}
                     for (let j = f; j <= t; j++) {
                         if (!r[j]) break;
                         r[j].first = r[j].first.replace('&#42;', '*');
