@@ -15,7 +15,6 @@
 </style>
 
 <p>
-	{console.log("AUDIO PATH: ", srcPath)}
     <audio src='{srcPath}' controls bind:volume>
         {srcPath} not available
     </audio>

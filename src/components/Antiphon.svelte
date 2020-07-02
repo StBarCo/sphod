@@ -8,7 +8,6 @@
     function sayAlleluia(a) {
         return a.alleluia ? ocome + ", Alleluia" : ocome;
     }
-    console.log("ANTE", $litDay.service, $litDay.season)
 
     let service = $litDay.service;
     let season = $litDay.season;

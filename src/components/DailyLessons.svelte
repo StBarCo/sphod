@@ -77,12 +77,8 @@ div.select {
 <div id='thisDay' transition:fly={flyTransition}>
 	<button class='close' on:click={()=>dispatch('closeClick')}>x</button>
 	<div class='dailyDetail'>
-		<ServiceTitle 
-			now={thisDay.now} 
-			season={thisDay.season}
-			week={thisDay.week}
-			lityear={thisDay.litYear}
-		/>
+		{console.log("THIS DAY: ", thisDay.season)}
+		<ServiceTitle {thisDay} />
 	</div>
 
 	<div class='select' on:click={ () => showMPlist = !showMPlist} >

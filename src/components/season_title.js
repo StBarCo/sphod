@@ -17,5 +17,5 @@ let sznz = {
 }
 
 export const seasonTitle = function(season) {
-    return sznz[season]
+    return sznz[season] ? sznz[season] : season;
 }

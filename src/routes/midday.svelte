@@ -16,12 +16,12 @@
     import Versical from '../components/Versical.svelte';
     //import {Button} from 'smelte';
 
-    litDay.init();
+    let thisDay = litDay.init();
     let additionalDirections = false;
 
 </script>
 
-<ServiceTitle service={'Midday Prayer'} />
+<ServiceTitle service={'Midday Prayer'} {thisDay} />
 
 <Versical speaker={'Officiant'} says={'O God, make speed to save us;'}/>
 <Versical speaker={'People'} says={'O Lord, make haste to help us.'}/>

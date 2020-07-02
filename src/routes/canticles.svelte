@@ -10,7 +10,7 @@
     import Gloria from '../components/Gloria.svelte';
     import Amen from '../components/Amen.svelte';
 
-    litDay.init('canticles');
+    let thisDay = litDay.init('canticles');
 
     const indent = true;
     const italic = true;
@@ -37,7 +37,7 @@
     }
 </style>
 
-<ServiceTitle service={"supplemental canticles<br>for worship"} />
+<ServiceTitle service={"supplemental canticles<br>for worship"} {thisDay}  />
 
 <button on:click={e => one = !one}>
 <Line {center}              text={"1"} />

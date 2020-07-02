@@ -21,7 +21,6 @@ function createPrayerListDB() {
                 });
         }
     ,   add: (prayerObj) => {
-            console.log("SAVE THIS: ", prayerObj )
             db.put(prayerObj, {include_docs: true}, (err, result) => {
                 if (!err) {
                     db.get(result.id)

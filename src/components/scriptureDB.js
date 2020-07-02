@@ -24,7 +24,6 @@ function createScriptureDB() {
     ,   get: (ref = false, key = false) => {
             let isCached = undefined
              update( db => { isCached =  !!db[key] })
-             console.log("IS CACHED? ", isCached)
             if (!ref || !key) return;
             axios.get('https://api.esv.org/v3/passage/html?q=' + ref + ";include-audio-link=false")
             .then( resp => {

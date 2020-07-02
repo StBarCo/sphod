@@ -16,8 +16,6 @@
 
 	lessonDB.readings(ld);
 
-	console.log("LESSONDB: ", lessonDB.readings)
-	console.log("PS LIST:", psList)
 </script>
 
 <style>

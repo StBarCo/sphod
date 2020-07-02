@@ -1,27 +1,27 @@
 <!-- ServiceTitle -->
 <script>
     export let    service=false
-                , now = false
-                , season=false
-                , week=false
-                , lityear=false 
+                , thisDay=false 
                 ;
 
     import { litDay } from './litDay.js';
     import format from 'date-fns/format';
     import { seasonTitle } from './season_title.js';
     import parseISO from 'date-fns/parseISO';
+    import { titleCase } from 'title-case';
 
-    now =       now ? new Date(now) : new Date($litDay.now);
-    season =    season ? season : $litDay.season;
-    lityear =   lityear ? lityear : $litDay.litYear;
-    week =      week ? week : $litDay.week
-    week =      (week === 0) ? "" : week
+    let now = parseISO(thisDay.now)
 
-    console.log("ServiceTitle: ", now, season, lityear, week, seasonTitle(season))
+    // thisDay =   thisDay ? thisDay : $litDay(new Date());
+    console.log("SERVICE TITLE: ", thisDay)
+    // season =    season ? season : $litDay.season;
+    // lityear =   lityear ? lityear : $litDay.litYear;
+    // week =      week ? week : $litDay.week
+    // week =      (week === 0) ? "" : week
 
 
-    let litTitle = seasonTitle(season) + " " + week + lityear;
+    let litTitle = titleCase(seasonTitle(thisDay.season))
+    if (thisDay > 0) litTitle += " " + thisDay.week + thisDay.lityear;
 </script>
 
 <style>

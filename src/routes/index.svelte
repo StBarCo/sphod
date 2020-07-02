@@ -25,10 +25,6 @@
 
 	var days = [];	//	The days to display in each box
 
-	function randInt(max) {
-		return Math.floor(Math.random()*max)+1;
-	}
-	
 	//	The Calendar Component just displays stuff in a row & column. It has no knowledge of dates.
 	//	The items[] below are placed (by you) in a specified row & column of the calendar.
 	//	You need to call findRowCol() to calc the row/col based on each items start date. Each date box has a Date() property.
@@ -41,25 +37,12 @@
 			litDay.getByDate(d.date);
 			items.push( JSON.parse( JSON.stringify($litDay) ) );
 		})
-//		let y = year;
-//		let m = month;
-//		let d1=new Date(y,m,randInt(7)+7);
-//		items=[
-//			{title:"11:00 Task Early in month",className:"task--primary",date:new Date(y,m,randInt(6)),len:randInt(4)+1},
-//			{title:"7:30 Wk 2 tasks",className:"task--warning",date:d1,len:randInt(4)+2},
-//			{title:"Overlapping Stuff (isBottom:true)",date:d1,className:"task--info",len:4,isBottom:true},
-//			{title:"10:00 More Stuff to do",date:new Date(y,m,randInt(7)+14),className:"task--info",len:randInt(4)+1,detailHeader:"Difficult",detailContent:"But not especially so"},
-//			{title:"All day task",date:new Date(y,m,randInt(7)+21),className:"task--danger",len:1,vlen:2},
-//		];
 
 		//This is where you calc the row/col to put each dated item
 		for (let i of items) {
 			// let rc = findRowCol(i.date);
 			let rc = findRowCol(i.now);
 			if (rc == null) {
-				console.log('didn`t find date for ',i);
-				console.log(i.now);
-				console.log(days);
 				i.startCol = i.startRow = 0;
 			} else {
 				i.startCol = rc.col;
@@ -85,10 +68,9 @@
 		//	find the last Monday of the previous month
 		var firstOfMonth = new Date(year, month, 1)
 		var firstDay = firstOfMonth.getDay();
-		//console.log('fd='+firstDay+' '+dayNames[firstDay]);
 		var firstCalendarDay = addDays(firstOfMonth, -firstDay)
-		var daysInThisMonth = getDaysInMonth(now);
-		var calendarDays = daysInThisMonth + firstDay + (6 - endOfMonth(now).getDay())
+		var daysInThisMonth = getDaysInMonth(firstOfMonth);
+		var calendarDays = daysInThisMonth + firstDay + (6 - endOfMonth(firstOfMonth).getDay())
 		// var daysInLastMonth = new Date(year, month, 0).getDate();
 		// var prevMonth = month==0 ? 11 : month-1;
 
@@ -98,26 +80,6 @@
 			days.push( JSON.parse( JSON.stringify($litDay) ) )
 		}
 
-		
-//		//for (let i = daysInLastMonth - firstDay; i<)
-//		//	show the days before the start of this month (disabled) - always less than 7
-//		for (let i=daysInLastMonth-firstDay;i<daysInLastMonth;i++) {
-//			let d = new Date(prevMonth==11?year-1:year,prevMonth,i+1);
-//			days.push({name:''+(i+1),enabled:false,date:d,});
-//		}
-//		//	show the days in this month (enabled) - always 28 - 31
-//		for (let i=0;i<daysInThisMonth;i++) {
-//			let d = new Date(year,month,i+1);
-//			if (i==0) days.push({name:monthAbbrev+' '+(i+1),enabled:true,date:d,});
-//			else days.push({name:''+(i+1),enabled:true,date:d,});
-//			//console.log('i='+i+'  dt is '+d+' date() is '+d.getDate());
-//		}
-//		//	show any days to fill up the last row (disabled) - always less than 7
-//		for (let i=0;days.length%7;i++) {
-//			let d = new Date((month==11?year+1:year),(month+1)%12,i+1);
-//			if (i==0) days.push({name:nextMonthAbbrev+' '+(i+1),enabled:false,date:d,});
-//			else days.push({name:''+(i+1),enabled:false,date:d,});
-//		}
 	}
 
 	function findRowCol(dt) {
@@ -136,7 +98,6 @@
 		console.log("ITEM CLIKC: ", e)
 	}
 	function dayClick(e) {
-		console.log("DAYCLICK: ", e)
 		showThisDay = !showThisDay;
 		thisDay = e;
 	}

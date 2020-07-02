@@ -6,7 +6,7 @@ const   christmasDOY = 300
     ,   epiphanyDOY = 312
     ,   proper1DOY = 68 // may 8
 // easter offsets
-    ,   ashWednesdayOffset = -45
+    ,   ashWednesdayOffset = -46
     ,   palmSundayOffset = -7
     ,   ascensionOffset = 39
     ,   pentecostOffset = 49
@@ -254,8 +254,8 @@ function initSeason(id, w, c, y) {
 }
 
 function getSeason(ld) {
-    var season = RedLetterDay.getRLD(ld);
-    if (season.id) return season;
+    var rld = RedLetterDay.getRLD(ld);
+    if (rld.season) return rld;
     var d = undefined;
     switch(true) {
         case inRange( ld.doy, ld.advent1, dayBefore(christmasDOY)) : 
@@ -285,30 +285,10 @@ function calculateProper(ld) {
     return Math.floor((ld.doy - proper1DOY) / 7) + 1;
 }
 
-function inRange(n, from, to) { return (n >= from && n <= to); }
+function inRange(n, from, to) { 
+    if (from > to) return (n >= from || n <= to); // spanning feb/mar
+    return ( n >= from && n <= to ); 
+}
 
 export const litDay = createLitDay();
 
-/*
-    @spec isSunday?( litDay ) :: bool
-    def isSunday?( lit ) do 
-        lit.sunday == (lit.doy |> Integer.mod(7))
-    end
-
-    @spec lastSunday( Date.t() ) :: Date.t()
-    def lastSunday( d ) do
-        if d |> isSunday? 
-            do d 
-            else Date.add(d, -(Date.day_of_week d))
-        end
-    end
-
-    @spec year_name( integer, integer ) :: atom
-    def year_name( doy, yr ) do
-        names = [:c, :a, :b]
-        lit_year = if doy >= @newyears do yr + 1 else yr end
-        names |> Enum.at( lit_year |> Integer.mod(3))
-    end
-
-end
-*/

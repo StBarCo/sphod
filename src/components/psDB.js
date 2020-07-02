@@ -16,7 +16,6 @@ function createPsDB() {
     return {
         subscribe
     ,   get: (ps, ld = false) => {
-            console.log("PSDB", ps, ld)
             // it could be an empty list: don't do anything
             // in this context a psalm is a list of 3 integers...
             // [psalm number, beginning vs, ending vs]
@@ -24,7 +23,6 @@ function createPsDB() {
             // ps could be falsy: get the psalms for mp/ep
             if (ps.length === 0) return;
             ld = ld ? ld : get(litDay);
-            console.log("PS DB GET: ", ps)
             var assignedPsalms = ps ? ps : dailyPsalms[ld.dom][ld.service];
             var allPromises = [];
             assignedPsalms.forEach( ([p, f, t]) => {

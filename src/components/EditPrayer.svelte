@@ -36,7 +36,6 @@
 	}
 
 	function handleOPClick(e) {
-		console.log('OP CLICK', e)
 		tPrayer.op = e.detail;
 		addOP = false;
 	}

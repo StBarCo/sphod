@@ -19,7 +19,6 @@
   function dayName(ld) {
     let thisWeek = ld.week === 0 ? "" : ld.week;
     let dn = titleCase(ld.season) + " " + thisWeek + ld.litYear ; 
-    // console.log("DAY NAME: ", dn)
     return dn;
   }
 
@@ -32,7 +31,6 @@
     //  find the last Monday of the previous month
     var firstOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
     var firstDay = firstOfMonth.getDay();
-    //console.log('fd='+firstDay+' '+dayNames[firstDay]);
     var firstCalendarDay = addDays(firstOfMonth, -firstDay)
     var daysInThisMonth = getDaysInMonth(now);
     var calendarDays = daysInThisMonth + firstDay + (6 - endOfMonth(now).getDay())

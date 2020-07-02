@@ -32,7 +32,6 @@ function createLessonDB() {
                 queryKeys.forEach( (q, i) => {
                     allPromises.push( axios.get('https://api.esv.org/v3/passage/html?q=' + q + ";include-audio-link=false"))
                 })
-                console.log("QUERY KEYS:", queryKeys)
                 Promise.all(allPromises)
                 .then( resps =>{
                     let tmp = resps
@@ -50,7 +49,6 @@ function createLessonDB() {
             //var lessonKey = ld.service + lesson;
             lectionaryRemote.get(ld.mpep)
             .then( resp => { 
-                console.log("LIST RESP: ", resp)
                 update( l => { 
                     l.readings = resp
                     return l;

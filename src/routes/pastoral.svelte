@@ -17,7 +17,7 @@
     import LitanyAtDeath from '../components/LitanyAtDeath.svelte';
 
 
-    litDay.init('healing')
+    let thisDay = litDay.init('healing')
     const indent = true;
     const italic = true;
     const bold = true;
@@ -126,7 +126,7 @@
     <title>Healing</title>
 </svelte:head>
 
-<ServiceTitle service={'Rites of Healing'} />
+<ServiceTitle service={'Rites of Healing'} {thisDay} />
 
 <button on:click={e => about = !about} >
     <Line {center} text={"Concerning the Rites of Healing"} />

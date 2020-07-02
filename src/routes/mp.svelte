@@ -28,13 +28,13 @@
     // import {Button} from 'smelte';
 
     let service = "mp"
-    litDay.init(service);
+    let thisDay = litDay.init(service);
     let additionalDirections = false;
     let showPrayerList = false;
 
 
 </script>
-<ServiceTitle service={'Daily Morning Prayer'} />
+<ServiceTitle service={'Daily Morning Prayer'} {thisDay} />
 
 <Rubric text={"The Officiant may begin Morning Prayer by reading an opening sentence of Scripture. One of the following, or a sentence from among those provided at the end of the Office (pages 27-29), is customary."} />
 
