@@ -78,6 +78,7 @@
 		padding: 0;
 		width: 98%;
 	}
+
 	div {
 		position: absolute;
 		width: 82%;
@@ -87,17 +88,10 @@
 		padding: 5px;
 		z-index: 9;
 	}
-	input {
-		width: 95%;
-	}
+
 	textarea {
 		width: 95%;
 		height: 10em;
-	}
-
-	ul {
-		width: 95%;
-		list-style: none;
 	}
 
 	p.options {

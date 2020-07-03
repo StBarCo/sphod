@@ -22,7 +22,6 @@
 
 	export var headers = [];
 	export let days = [];
-	export let items = [];
 	
 	let dispatch = createEventDispatcher();
 

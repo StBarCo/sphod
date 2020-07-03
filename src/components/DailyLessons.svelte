@@ -59,7 +59,7 @@ button.close {
 	border: none;
 	margin: .2em;
 }
-p.dailyDetail {
+div.dailyDetail {
 	text-align: center;
 	margin: 0;
 }

@@ -30,6 +30,7 @@
     let service = "ep";
     let thisDay = litDay.init(service);
     let additionalDirections = false;
+    let showPrayerList = false;
 
 </script>
 <ServiceTitle service={'Daily Evening Prayer'} {thisDay} />
