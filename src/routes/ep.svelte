@@ -28,12 +28,12 @@
     // import {Button} from 'smelte';
 
     let service = "ep";
-    let thisDay = litDay.init(service);
+    litDay.init(service);
     let additionalDirections = false;
     let showPrayerList = false;
 
 </script>
-<ServiceTitle service={'Daily Evening Prayer'} {thisDay} />
+<ServiceTitle service={'Daily Evening Prayer'} thisDay={$litDay} />
 
 <Rubric text={"The Officiant may begin Evening Prayer by reading an opening sentence of Scripture. One of the following, or a sentence from among those provided at the end of the Office (pages 54-56), is customary."} />
 
@@ -48,9 +48,9 @@
 
 <h3>The Lessons</h3>
 <Lesson lesson={1} {service} />
-<Canticle lesson={1} {service} />
+<Canticle lesson={1} />
 <Lesson lesson={2} {service} />
-<Canticle lesson={2} {service} />
+<Canticle lesson={2} />
 
 <ApostlesCreed />
 

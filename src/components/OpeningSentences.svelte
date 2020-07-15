@@ -102,7 +102,7 @@
             ]
         }
         , ep: {
-                anytime: [
+                proper: [
                     { text: "O worship the Lord in the beauty of holiness; let the whole earth stand in awe of him."
                     , ref: "Psalm 96:9"
                     }

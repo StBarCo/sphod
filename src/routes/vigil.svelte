@@ -13,7 +13,7 @@
     import Amen from '../components/Amen.svelte';
     import LitanyAtDeath from '../components/LitanyAtDeath.svelte';
 
-    let thisDay = litDay.init('healing')
+    litDay.init('healing')
     const indent = true;
     const italic = true;
     const bold = true;
@@ -71,7 +71,7 @@
     <title>Vigil</title>
 </svelte:head>
 
-<ServiceTitle service={'Prayers for a Vigil'} {thisDay} />
+<ServiceTitle service={'Prayers for a Vigil'} thisDay={$litDay} />
 
 <Rubric text={"It is appropriate that family and friends come together prior to a funeral. This rite may be used on such an occasion, whether at the church, a funeral home, or elsewhere."} />
 

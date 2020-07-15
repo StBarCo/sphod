@@ -8,6 +8,12 @@
 	let showPrayer = [];
 	let dispatch = createEventDispatcher();
 
+  function myTitleCase(s) {
+    if (typeof s === 'string' || s instanceof String) return titleCase(s);
+    return "";
+  }
+
+
 	function handleShowPrayer(p, i) {
 		showPrayer[i] = !showPrayer[i];
 		dispatch('opClick',p);
@@ -45,7 +51,7 @@
 				{#if row.category === cat}
 					<li on:click|stopPropagation={ () => handleShowPrayer(row, j) } >
 						<p class='title'>
-							{titleCase(row.title)} ({row.source})
+							{myTitleCase(row.title)} ({row.source})
 						</p>
 						{#if showPrayer[j]}
 							<p class='prayer'>{row.prayer}</p>

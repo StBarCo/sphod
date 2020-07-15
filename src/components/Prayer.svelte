@@ -20,6 +20,12 @@
 
 	let close = "float: right; position: relative;"
 
+  function myTitleCase(s) {
+  	if (typeof s === 'string' || s instanceof String) return titleCase(s);
+  	return "";
+  }
+
+
 	function handleAddOP() {
 		addOP = !addOP;
 		if ( !addOP) {
@@ -110,7 +116,7 @@
 				<li>{prayer.why}</li>
 				{#if prayer.op}
 					<li on:click={ () => handleShowOP()} >
-						Occasional Prayer: {titleCase(prayer.op.title)}
+						Occasional Prayer: {myTitleCase(prayer.op.title)}
 					</li>
 				{:else}
 					<li on:click={ () => handleAddOP()}>

@@ -25,9 +25,14 @@
 	
 	let dispatch = createEventDispatcher();
 
+  function myTitleCase(s) {
+    if (typeof s === 'string' || s instanceof String) return titleCase(s);
+    return "";
+  }
+
   function dayName(ld) {
     let thisWeek = ld.week === 0 ? "" : ld.week;
-    let dn = titleCase(ld.season) + " " + thisWeek + ld.litYear ; 
+    let dn = myTitleCase(ld.season) + " " + thisWeek + ld.litYear ; 
     return dn;
   }
 

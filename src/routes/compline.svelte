@@ -13,7 +13,7 @@
     import ServiceTitle from '../components/ServiceTitle.svelte';
     import Versical from '../components/Versical.svelte';
 
-    let thisDay = litDay.init('compline')
+    litDay.init('compline')
     const indent = true;
     const italic = true;
     const bold = true;
@@ -71,7 +71,7 @@
     <title>Compline</title>
 </svelte:head>
 
-<ServiceTitle service={'Compline'} {thisDay} />
+<ServiceTitle service={'Compline'} thisDay={$litDay} />
 <Rubric text={"The Officiant begins"} />
 <p>
 The Lord Almighty grant us a peaceful night

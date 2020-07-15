@@ -15,7 +15,7 @@
     import Amen from '../components/Amen.svelte';
     import ApostlesCreed from '../components/ApostlesCreed.svelte';
 
-    let thisDay = litDay.init('compline')
+    litDay.init('compline')
     const indent = true;
     const italic = true;
     const bold = true;
@@ -41,7 +41,7 @@
     <title>Family Prayer</title>
 </svelte:head>
 
-<ServiceTitle service={'Family Prayer'} {thisDay} />
+<ServiceTitle service={'Family Prayer'} thisDay={$litDay} />
 
 <button on:click={ e => morning = !morning} >
     <h2>In The Morning</h2>

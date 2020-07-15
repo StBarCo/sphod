@@ -2,6 +2,13 @@
 <script>
     export let text;
     import {titleCase} from 'title-case';
+
+  function myTitleCase(s) {
+    if (typeof s === 'string' || s instanceof String) return titleCase(s);
+    return "";
+  }
+
+
 </script>
 
 <style>
@@ -12,5 +19,5 @@
     }
 </style>
 
-<span> ({titleCase(text)})</span>
+<span> ({myTitleCase(text)})</span>
 <br>

@@ -6,6 +6,7 @@ import PouchDB from 'pouchdb';
 import PouchDBFind from 'pouchdb-find';
 PouchDB.plugin(PouchDBFind);
 import { dailyPsalms, dailyPsalms60Day } from './daily_psalms.js';
+import { titleCase } from 'title-case';
 
 function createPsDB() {
     let psalms = new PouchDB('Psalms')
@@ -49,9 +50,26 @@ function createPsDB() {
             ld = ld ? ld : get(litDay);
             let assignedPsalms = dailyPsalms[ld.dom][ld.service];
             return assignedPsalms.map( ([p, f, t]) => {
+                t = isNaN(t) ? 999 : t;
                 return "Psalm " + p + ":" + f + "-" + ((t === 999) ? "end" : t);
             })
 
+    }
+    ,   copyToClipboard([p, f, t], copy='copy') {
+            psalmsRemote.get('acna' + p.toString() )
+            .then( r => {
+                t = isNaN(t) ? 999 : t;
+                let s = r.name + '\n' + titleCase(r.title) + '\n';
+                for (let i = f; i <= t; i++) {
+                    if( !r[i]) break;
+                    r[i].first = r[i].first.replace('&#42;', '*');
+                    s += i.toString() + ' ' + r[i].first + '\n    ' + r[i].second + '\n';
+                }
+                navigator.clipboard.writeText(s)
+            })
+            .catch( err => {
+                console.log("ERROR COPYING PSALM: ", err)
+            })
     }
     }
 }

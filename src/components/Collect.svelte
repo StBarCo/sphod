@@ -15,6 +15,11 @@
     let showGrace = false;
     let showThis = hideable();
     
+  function myTitleCase(s) {
+    if (typeof s === 'string' || s instanceof String) return titleCase(s);
+    return "";
+  }
+
     function hideable() {
         if (showPeaceButton && !showPeace) return "hideMe";
         if (showGraceButton && !showGrace) return "hideMe";
@@ -46,7 +51,7 @@
     {/if}
     
     {#if $collectDB[ofType].title.length > 0 }
-        <h3 class={ showThis } >{titleCase($collectDB[ofType].title)}</h3>
+        <h3 class={ showThis } >{myTitleCase($collectDB[ofType].title)}</h3>
         <p class={ showThis } >{$collectDB[ofType].text}</p>
     {/if}
 </div>

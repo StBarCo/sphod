@@ -10,7 +10,7 @@
 			, "ep": "Evening Prayer"
 			, "compline": "Compline"
 			, "family": "Family Prayers"
-			, "/": "Calendar"
+			, "calendar": "Calendar"
 			, "pastoral": "Pastoral"
 			, "vigil": "Vigal"
 			, "canticles": "Canticles"
@@ -22,7 +22,7 @@
 			};
 
 	function currentPage(p) {
-		return names[p] ? names[p] : "Calendar"
+		return names[p] ? names[p] : ""
 	}
 
 	function leftRight(n) {

@@ -48,7 +48,7 @@ function createLitDay() {
     ,   init: (service) => {
             let ld = innerInit(new Date);
             service = service ? service : ""
-            return set( 
+            set( 
                 Object.assign(
                     ld, 
                     getSeason(ld),

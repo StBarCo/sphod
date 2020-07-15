@@ -10,10 +10,20 @@
 
       const indent = true;
 </script>
+<style>
+      span {
+            font-style: italic;
+            padding-left: 2em;
+      }
+      h3 {
+            margin-top: 2em;
+            font-weight: bold;
+      }
+</style>
 
 <div>
       {#each $psDB as ps}
-            {ps.name}  {ps.title}
+            <h3>{ps.name} <span>{ps.title ? ps.title : ""}</span></h3>
             <PlayAudio src={ps._id} />
            {#each ps.vss as v}
                   <Line text={v.vs + ". " + v.ln.first} />

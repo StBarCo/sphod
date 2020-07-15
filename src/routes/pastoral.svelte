@@ -3,6 +3,7 @@
     import { litDay } from '../components/litDay.js';
     import { psDB } from '../components/psDB.js';
     import { canticleDB } from '../components/canticleDB.js';
+    import CanticleTitle from '../components/CanticleTitle.svelte';
     import Rubric from '../components/Rubric.svelte';
     import Versical from '../components/Versical.svelte';
     import Line from '../components/Line.svelte';
@@ -17,7 +18,7 @@
     import LitanyAtDeath from '../components/LitanyAtDeath.svelte';
 
 
-    let thisDay = litDay.init('healing')
+    litDay.init('healing')
     const indent = true;
     const italic = true;
     const bold = true;
@@ -126,7 +127,7 @@
     <title>Healing</title>
 </svelte:head>
 
-<ServiceTitle service={'Rites of Healing'} {thisDay} />
+<ServiceTitle service={'Rites of Healing'} thisDay={$litDay} />
 
 <button on:click={e => about = !about} >
     <Line {center} text={"Concerning the Rites of Healing"} />
@@ -810,7 +811,7 @@
     <Rubric text={"The Officiant and People may say"} />
     <!-- nunc dimittis -->
     <div>
-    	<h3>{$canticleDB.named.name} {$canticleDB.named.title}</h3>
+        <CanticleTitle canticle={$canticleDB.named} />
     	<Rubric text={$canticleDB.named.notes} />
     	{#each $canticleDB.named.text as l }
     			<Line indent={l.indent} text={l.text} />

@@ -1,6 +1,7 @@
 <!-- MPInvitatory -->
 <script>
     import Rubric from './Rubric.svelte';
+    import CanticleTitle from './CanticleTitle.svelte';
     import Versical from './Versical.svelte';
     import Line from './Line.svelte';
     import Antiphon from './Antiphon.svelte';
@@ -32,6 +33,16 @@
 
     canticleDB.byName(getCollect());
 </script>
+<style>
+    h3 {
+        margin-top: 2em;
+        font-weight: bold;
+    }
+    span {
+        font-style: italic;
+        padding-left: 2em;
+    }
+</style>
 
 <h3>Invitatory</h3>
 <Rubric text={"All stand."} />
@@ -49,7 +60,7 @@
 
 {#if $canticleDB.named._id.length > 0}
 <div>
-	<h3>{$canticleDB.named.name} {$canticleDB.named.title}</h3>
+    <CanticleTitle canticle={$canticleDB.named} />
 	<Rubric text={$canticleDB.named.notes} />
     <PlayAudio src={$canticleDB.named._id} />
 	{#each $canticleDB.named.text as l }

@@ -3,7 +3,6 @@
 	export let ld; // LitDay object
 	
 	import { eucharistDB } from './eucharistDB.js';
-	import { titleCase } from 'title-case';
 	import SingleLesson from './SingleLesson.svelte';
 	import Psalms from './Psalms.svelte';
 	import { parsePsalm } from './parse-psalm.js';

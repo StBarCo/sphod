@@ -4,14 +4,15 @@
 	import {createEventDispatcher} from 'svelte';
 	import { fly, slide } from 'svelte/transition';
     import format from 'date-fns/format';
-	import { titleCase } from 'title-case';
 	import Lesson from './Lesson.svelte';
 	import ListLessons from './ListLessons.svelte';
     import ServiceTitle from './ServiceTitle.svelte';
     import Psalms from './Psalms.svelte';
     import ListEucharisticLessons from './ListEucharisticLessons.svelte';
+    import CopyToClipboard from './CopyToClipboard.svelte';
 
 	let dispatch = createEventDispatcher();
+	let label = "Copy all lessons to Clipboard";
 
 	let showEPlist = false;
 	let showEUlist = false;
@@ -59,6 +60,7 @@ button.close {
 	border: none;
 	margin: .2em;
 }
+
 div.dailyDetail {
 	text-align: center;
 	margin: 0;
@@ -77,12 +79,12 @@ div.select {
 <div id='thisDay' transition:fly={flyTransition}>
 	<button class='close' on:click={()=>dispatch('closeClick')}>x</button>
 	<div class='dailyDetail'>
-		{console.log("THIS DAY: ", thisDay.season)}
 		<ServiceTitle {thisDay} />
 	</div>
 
 	<div class='select' on:click={ () => showMPlist = !showMPlist} >
 		Morning Prayer Lessons 
+		<CopyToClipboard copy={"mp"} {label} {thisDay} />
 		{#if showMPlist}
 			<div class='lesson' transition:slide={slideTransition}>
 				<ListLessons ld={ ldWithService(thisDay, "mp")} />
@@ -92,6 +94,7 @@ div.select {
 
 	<div class='select' on:click={ () => showEPlist = !showEPlist} >
 		Evenint Prayer Lessons
+		<CopyToClipboard copy={"ep"} {label} {thisDay} />
 		{#if showEPlist}
 			<div class='lesson' transition:slide={slideTransition}>
 				<ListLessons ld={ldWithService(thisDay, 'ep')} />
@@ -101,6 +104,7 @@ div.select {
 
 	<div class='select' on:click={ () => showEUlist = !showEUlist} >
 		Eucharist Lessons 
+		<CopyToClipboard copy={"eu"} {label} {thisDay} />
 		{#if showEUlist}
 			<div class='lesson' transition:slide={slideTransition}>
 				<ListEucharisticLessons ld={thisDay} />

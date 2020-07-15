@@ -16,6 +16,13 @@
 	let addOP = false;
 	let changeOP = false;
 
+	function myTitleCase(s) {
+		if (typeof s === 'string' || s instanceof String) return titleCase(s);
+		return "";
+  	}
+
+
+
 	function initPrayerObj() {
 		return { _id: new Date().toISOString()
 				, for: ""
@@ -138,7 +145,7 @@
 
 	{#if tPrayer.op}
 		<p>Occasional Prayer</p>
-		<p>{ titleCase(tPrayer.op.title)}
+		<p>{ myTitleCase(tPrayer.op.title)}
 			<button class='blue' on:click={ () => handleChangeOP() } >
 				{ toggleText(changeOP, "All Done", "Change") }
 			</button>
@@ -147,7 +154,7 @@
 
 		{:else}
 			<p>{tPrayer.op.category} from {tPrayer.op.source}</p>
-			<p>{titleCase(tPrayer.op.title)}</p>
+			<p>{myTitleCase(tPrayer.op.title)}</p>
 			<p>{tPrayer.op.prayer}</p>
 		{/if}
 		</p>
