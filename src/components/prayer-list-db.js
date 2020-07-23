@@ -2,17 +2,13 @@
 
 import { writable } from 'svelte/store';
 import { litDay } from './litDay.js';
-import PouchDB from 'pouchdb';
-import PouchDBFind from 'pouchdb-find';
-PouchDB.plugin(PouchDBFind);
-
+import { getFromDB, getAllDocsFromDB } from './dbHelpers.js';
 function createPrayerListDB() {
     const {subscribe, set, update} = writable( initPrayerList() )
-    const db = new PouchDB('PrayerList');
     return {
         subscribe
     ,   init: () => {
-            db.allDocs({ include_docs: true, descending: true })
+            getAllDocsFromDB( 'PrayerList', { include_docs: true, descending: true })
             .then( resp => {
                 update ( p => {return p = resp});
             })

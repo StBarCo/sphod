@@ -2,10 +2,12 @@
 
 import { writable, derived, get } from 'svelte/store';
 import { litDay } from './litDay.js';
+import { getFromDB, getAllDocsFromDB } from './dbHelpers.js';
 import PouchDB from 'pouchdb';
 import PouchDBFind from 'pouchdb-find';
 PouchDB.plugin(PouchDBFind);
 
+let Canticles = 'Canticles';
 function createCanticleDB() {
     const {subscribe, set, update} = writable( 
         {1: initCanticle(), 2: initCanticle(), named: initCanticle() } )
@@ -16,32 +18,23 @@ function createCanticleDB() {
             var key1 = ld.service + lzn + "_" + ld.season + "_" + ld.dow;
             var key2 = ld.service + lzn + "_" + ld.dow;
             var thisCanticle = canticle(key1) ? canticle(key1) : canticle(key2);
-            retrieveCanticle(thisCanticle, lzn, undefined, update)
+            retrieveCanticle(thisCanticle, lzn, update)
         }
     ,   byName: name =>{
-        retrieveCanticle(name, 'named', undefined, update)
+        retrieveCanticle(name, 'named', update)
         }
     ,   initAll: () => {
-            let db = new PouchDB('https://bcp2019.com/couchdb/canticles');
-            db.allDocs({
-                include_docs: true,
-                attachments: true
-            })
+            getAllDocsFromDB(Canticles)
             .then( resp => {
                 console.log("CANTICLE RESP: ", resp)
-                // handle result
             })
-            .catch( err => {
-                console.log(err);
-                });
+            .catch( err => { console.log(err) });
         }
-
     }
 }
 
-function retrieveCanticle(name, saveHere, db, callback) {
-    if (db === undefined) db = new PouchDB("Canticles");
-    db.get(name)
+function retrieveCanticle(name, saveHere, callback) {
+    getFromDB(name, Canticles)
     .then( resp => {
         callback(c => {
             // split apart the text, 
@@ -58,14 +51,10 @@ function retrieveCanticle(name, saveHere, db, callback) {
         }) //end of update call
     })
     .catch(err => {
-        // if the local db fails, try the remote one
-        if (db.name === "Canticles") {
-            db = new PouchDB('https://bcp2019.com/couchdb/canticles');
-            retrieveCanticle(name, saveHere, db, callback);
-        }
         console.log("Error getting canticle named ", name, " because: ", err)
     })
 }
+
 // this keeps app from error out before canticles return from DB
 function initCanticle() {
     return {

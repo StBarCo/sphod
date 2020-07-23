@@ -1,19 +1,14 @@
 // occasionsPrayers store
 
 import { readable } from 'svelte/store';
-import PouchDB from 'pouchdb';
-import PouchDBFind from 'pouchdb-find';
-PouchDB.plugin(PouchDBFind);
-
+import { getAllDocsFromDB } from './dbHelpers.js';
 
 // this keeps app from error out before canticles return from DB
 function initOPs() {
     return { categories: [], rows: [] };
 }
 function start(set) {
-    let db = new PouchDB('https://bcp2019.com/couchdb/occasional_prayers');
-    let ops = initOPs();
-    db.allDocs({ include_docs: true })
+    getAllFromDB('OccasionalPrayers')
     .then( resp => {                
         resp.rows.map( r => {
             switch( true ) {

@@ -18,7 +18,7 @@
 			, "pl": "Prayer List"
 			, "about": "About"
 			, "blog": "Blog"
-			, "db": "Load Database"
+			, "db": "Work Offline"
 			};
 
 	function currentPage(p) {

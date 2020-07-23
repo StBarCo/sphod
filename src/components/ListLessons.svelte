@@ -22,15 +22,6 @@
 		return "";
   	}
 
-	function copy(service) {
-		navigator.permissions.query({name: "clipboard-write"}).then(result => {
-			if (result.state == "granted" || result.state == "prompt") {
-		    console.log("copy all ", service, " to clipboard")
-		  }
-		 });
-	};
-
-
 </script>
 
 <style>

@@ -1,15 +1,9 @@
 // collectDB.js
 import { writable, derived, get } from 'svelte/store';
 import { litDay } from './litDay.js';
-import PouchDB from 'pouchdb';
-import PouchDBFind from 'pouchdb-find';
-PouchDB.plugin(PouchDBFind);
+import { getFromDB } from './dbHelpers.js';
 
 function createCollectDB() {
-    let iphod = new PouchDB('Iphod')
-    ,   iphodRemote = new PouchDB('https://bcp2019.com/couchdb/iphod')
-    ;
-
     const {subscribe, set, update} = writable( 
         { day: init()
         , week: init()
@@ -50,16 +44,14 @@ function createCollectDB() {
                 })
             }
             else {
-                iphodRemote.get(key)
-                .then( resp => {
-                    update( c => {
-                        c[ofType] = resp;
-                        return c;
+                getFromDB(key, 'Collects')
+                    .then( resp => {
+                        update( c => {
+                            c[ofType] = resp;
+                            return c;
+                        })
                     })
-                })
-                .catch( err => {
-                    console.log("Failed to Collect ", key, " because ", err)
-                })
+                    .catch( err => { console.log("Failed to get Collect ", key, " because ", err) });
             }
         }
     }

@@ -2,10 +2,8 @@
 
 import { writable, derived, get } from 'svelte/store';
 import { litDay } from './litDay.js';
-import PouchDB from 'pouchdb';
-import PouchDBFind from 'pouchdb-find';
+import { getFromDB } from './dbHelpers.js';
 import { dailyPsalms, dailyPsalms60Day } from './daily_psalms.js';
-PouchDB.plugin(PouchDBFind);
 
 import axios from 'axios'; // for http requests
 axios.defaults.headers.common['Authorization'] = "Token 77f1ef822a19e06867cf335a168713f9d2159bfc";
@@ -14,9 +12,6 @@ import {BibleRef} from './bible_ref.js';
 
 
 function createLessonDB() {
-    let psalms = new PouchDB('Psalms')
-    ,   lectionaryRemote = new PouchDB('https://bcp2019.com/couchdb/lectionary')
-    ;
 
     const {subscribe, set, update} = writable( initLessonDB() )
     return {
@@ -25,7 +20,7 @@ function createLessonDB() {
     ,   get: (lesson, service = false) => {
             var ld = get(litDay);
             var lessonKey = service ? service + lesson : ld.service + lesson;
-            lectionaryRemote.get(ld.mpep)
+            getFromDB(ld.mpep, 'Lectionary')
             .then( resp => { 
                 var queryKeys = resp[lessonKey].map( k => {return k.read})
                 var allPromises = [];
@@ -42,13 +37,12 @@ function createLessonDB() {
                         return l;
                         });
                 })
-            })
-            .catch( err => { console.log("Error reading lectionary:", err)})
+        })
 
         }
     ,   readings: (ld) => {
             //var lessonKey = ld.service + lesson;
-            lectionaryRemote.get(ld.mpep)
+            getFromDB(ld.mpep, 'Lectionary')
             .then( resp => { 
                 update( l => { 
                     l.readings = resp
@@ -67,13 +61,11 @@ function createLessonDB() {
         })
     }
     ,   copyAllToClipboard(ld, service) {
-            let psalmsRemote = new PouchDB('https://bcp2019.com/couchdb/psalms')
-            //var lessonKey = service ? service + lesson : ld.service + lesson;
             var allPromises = [];
             var assignedPsalms = dailyPsalms[ld.dom][service];
             assignedPsalms.forEach( ([p, f, t]) => {
                 // this gets the psalms, but not the readings
-                allPromises.push( psalmsRemote.get('acna' + p.toString()));
+                allPromises.push( getFromDB('acna' + p.toString(), 'Psalms') );
             })
 
             lectionaryRemote.get(ld.mpep)
